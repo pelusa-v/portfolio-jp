@@ -6,7 +6,7 @@ import "github.com/pelusa-v/portfolio-jp/internal/domain/entities"
 type UsersRepositoryPort interface {
 	Get(id int) (entities.User, error)
 	List() ([]entities.User, error)
-	Update(id int) error
+	Update(id int, user entities.User) error
 	Delete(id int) error
 	Create(user entities.User) (entities.User, error)
 }

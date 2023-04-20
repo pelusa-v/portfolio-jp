@@ -40,3 +40,13 @@ func (userModel *User) MapModelToEntity() entities.User {
 		UpdatedAt: userModel.UpdatedAt,
 	}
 }
+
+type ListUser []User
+
+func (listUserModel *ListUser) MapModelToEntity() []entities.User {
+	var userEntities []entities.User
+	for _, user := range *listUserModel {
+		userEntities = append(userEntities, user.MapModelToEntity())
+	}
+	return userEntities
+}
