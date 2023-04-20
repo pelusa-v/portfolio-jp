@@ -1,4 +1,4 @@
-package domain
+package entities
 
 type Tag struct {
 	Id          string `json:"Id"`
