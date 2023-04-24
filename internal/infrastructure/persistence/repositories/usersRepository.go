@@ -24,12 +24,7 @@ func (repo *usersRepository) Get(id int) (entities.User, error) {
 	var user = models.User{}
 	err := repo.db.First(&user, id).Error
 	userEntity := user.MapModelToEntity()
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return userEntity, err
-	}
-
-	return userEntity, nil
+	return userEntity, err
 }
 
 func (repo *usersRepository) List() ([]entities.User, error) {
