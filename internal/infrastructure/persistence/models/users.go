@@ -7,18 +7,18 @@ import (
 )
 
 type User struct {
-	ID        string    `gorm:"primaryKey"`
-	Email     string    `gorm:"type:varchar(200);not null;uniqueIndex"`
-	Name      string    `gorm:"type:varchar(200);not null"`
-	LastName  string    `gorm:"type:varchar(200);not null"`
-	Password  string    `gorm:"not null"`
-	CreatedAt time.Time `gorm:"not null"`
-	UpdatedAt time.Time `gorm:"not null"`
+	ID        uint   `gorm:"primaryKey"`
+	Email     string `gorm:"type:varchar(200);not null;uniqueIndex"`
+	Name      string `gorm:"type:varchar(200);not null"`
+	LastName  string `gorm:"type:varchar(200);not null"`
+	Password  string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 	// Projects  []Project      `gorm:"type:"`
 }
 
-func MapEntityToModel(userEntity *entities.User) User {
-	return User{
+func MapEntityToModel(userEntity *entities.User) *User {
+	return &User{
 		ID:        userEntity.ID,
 		Email:     userEntity.Email,
 		Name:      userEntity.Name,

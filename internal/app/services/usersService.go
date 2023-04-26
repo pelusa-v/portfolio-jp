@@ -24,7 +24,7 @@ func (srv *usersService) ListUsers() ([]entities.User, error) {
 	return srv.repo.List()
 }
 
-func (srv *usersService) UpdateUser(id int, user entities.User) error {
+func (srv *usersService) UpdateUser(id int, user entities.User) (entities.User, error) {
 	return srv.repo.Update(id, user)
 }
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -49,19 +50,20 @@ func (handler *usersHandler) CreateUser(ctx *gin.Context) {
 
 func (handler *usersHandler) UpdateUser(ctx *gin.Context) {
 	userId, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
+	// if err != nil {
+	// 	handler.manager.BadRequest(ctx)
+	// }
 
 	var userEntity entities.User
 	ctx.BindJSON(&userEntity) // load user value
-	err = handler.srv.UpdateUser(userId, userEntity)
+	user, err := handler.srv.UpdateUser(userId, userEntity)
 
 	if err != nil {
+		fmt.Print(err)
 		handler.manager.BadRequest(ctx)
+	} else {
+		handler.manager.Success(ctx, user)
 	}
-
-	handler.manager.Success(ctx, userEntity)
 }
 
 func (handler *usersHandler) DeleteUser(ctx *gin.Context) {
