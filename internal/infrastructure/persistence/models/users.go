@@ -17,16 +17,15 @@ type User struct {
 	// Projects  []Project      `gorm:"type:"`
 }
 
-func MapEntityToModel(userEntity *entities.User) *User {
-	return &User{
-		ID:        userEntity.ID,
-		Email:     userEntity.Email,
-		Name:      userEntity.Name,
-		LastName:  userEntity.LastName,
-		Password:  userEntity.Password,
-		CreatedAt: userEntity.CreatedAt,
-		UpdatedAt: userEntity.UpdatedAt,
-	}
+func (userModel *User) MapEntityToModel(userEntity *entities.User) *User {
+	userModel.ID = userEntity.ID
+	userModel.Email = userEntity.Email
+	userModel.Name = userEntity.Name
+	userModel.LastName = userEntity.LastName
+	userModel.Password = userEntity.Password
+	userModel.CreatedAt = userEntity.CreatedAt
+	userModel.UpdatedAt = userEntity.UpdatedAt
+	return userModel
 }
 
 func (userModel *User) MapModelToEntity() entities.User {

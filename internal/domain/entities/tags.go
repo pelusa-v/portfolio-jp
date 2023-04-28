@@ -1,7 +1,7 @@
 package entities
 
 type Tag struct {
-	Id          string `json:"Id"`
+	ID          uint   `json:"ID"`
 	Name        string `json:"Name"`
 	Description string `json:"Description"`
 }

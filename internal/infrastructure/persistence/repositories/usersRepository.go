@@ -40,13 +40,13 @@ func (repo *usersRepository) Update(id int, user entities.User) (entities.User, 
 		return user, err
 	}
 
-	err = repo.db.Model(&userToUpdate).Updates(models.MapEntityToModel(&user)).Error // save execute update if model contains ID
+	err = repo.db.Model(&userToUpdate).Updates(userToUpdate.MapEntityToModel(&user)).Error // save execute update if model contains ID
 	return user, err
 }
 
 func (repo *usersRepository) Delete(id int) error {
 	var user models.User
-	err := repo.db.Find(&user).Error
+	err := repo.db.First(&user, id).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
@@ -57,6 +57,7 @@ func (repo *usersRepository) Delete(id int) error {
 }
 
 func (repo *usersRepository) Create(user entities.User) (entities.User, error) {
-	err := repo.db.Create(models.MapEntityToModel(&user)).Error
+	var userToCreate = models.User{}
+	err := repo.db.Create(userToCreate.MapEntityToModel(&user)).Error
 	return user, err
 }
