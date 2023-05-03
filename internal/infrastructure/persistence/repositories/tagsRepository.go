@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/pelusa-v/portfolio-jp/internal/domain/entities"
 	"github.com/pelusa-v/portfolio-jp/internal/infrastructure/persistence/config"
@@ -28,10 +27,8 @@ func (repo *tagsRepository) Update(id int, tag entities.Tag) (entities.Tag, erro
 		return tag, err
 	}
 
-	fmt.Println(tagToUpdate)
-	fmt.Println(tagToUpdate.MapEntityToModel(&tag))
 	err = repo.db.Model(&tagToUpdate).Updates(tagToUpdate.MapEntityToModel(&tag)).Error // save execute update if model contains ID
-	return tag, err
+	return tagToUpdate.MapModelToEntity(), err
 }
 
 func (repo *tagsRepository) Delete(id int) error {
@@ -49,5 +46,5 @@ func (repo *tagsRepository) Delete(id int) error {
 func (repo *tagsRepository) Create(tag entities.Tag) (entities.Tag, error) {
 	var tagToCreate = models.Tag{}
 	err := repo.db.Create(tagToCreate.MapEntityToModel(&tag)).Error
-	return tag, err
+	return tagToCreate.MapModelToEntity(), err
 }

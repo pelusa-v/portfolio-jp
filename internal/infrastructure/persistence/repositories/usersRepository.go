@@ -41,7 +41,7 @@ func (repo *usersRepository) Update(id int, user entities.User) (entities.User, 
 	}
 
 	err = repo.db.Model(&userToUpdate).Updates(userToUpdate.MapEntityToModel(&user)).Error // save execute update if model contains ID
-	return user, err
+	return userToUpdate.MapModelToEntity(), err
 }
 
 func (repo *usersRepository) Delete(id int) error {
@@ -59,5 +59,5 @@ func (repo *usersRepository) Delete(id int) error {
 func (repo *usersRepository) Create(user entities.User) (entities.User, error) {
 	var userToCreate = models.User{}
 	err := repo.db.Create(userToCreate.MapEntityToModel(&user)).Error
-	return user, err
+	return userToCreate.MapModelToEntity(), err
 }

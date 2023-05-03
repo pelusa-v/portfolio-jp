@@ -22,20 +22,20 @@ func (manager *Manager) MakeGetResponse(ctx *gin.Context, err error, object any)
 	} else {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Internal error"})
 	}
-	return
 }
 
 func (manager *Manager) BadRequest(ctx *gin.Context) {
-	ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+	// ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 	return
 }
 
 func (manager *Manager) CreatedSuccessfully(ctx *gin.Context, object any) {
-	ctx.JSON(http.StatusCreated, object)
+	ctx.AbortWithStatusJSON(http.StatusCreated, object)
 	return
 }
 
 func (manager *Manager) Success(ctx *gin.Context, object any) {
-	ctx.JSON(http.StatusOK, object)
+	ctx.AbortWithStatusJSON(http.StatusOK, object)
 	return
 }
