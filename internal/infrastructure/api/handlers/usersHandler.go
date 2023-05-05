@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,18 +21,14 @@ func NewUsersHandler(service services.UsersServicePort) *usersHandler {
 }
 
 func (handler *usersHandler) GetUser(ctx *gin.Context) {
-	userId, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		handler.manager.MakeGetResponse(ctx, err, nil)
-	}
-
+	userId, _ := strconv.Atoi(ctx.Param("id"))
 	userEntity, err := handler.srv.GetUser(userId)
-	handler.manager.MakeGetResponse(ctx, err, userEntity)
+	handler.manager.Response(ctx, err, userEntity, ctx.Request.Method)
 }
 
 func (handler *usersHandler) ListUsers(ctx *gin.Context) {
 	usersEntities, err := handler.srv.ListUsers()
-	handler.manager.MakeGetResponse(ctx, err, usersEntities)
+	handler.manager.Response(ctx, err, usersEntities, ctx.Request.Method)
 }
 
 func (handler *usersHandler) CreateUser(ctx *gin.Context) {
@@ -41,41 +36,35 @@ func (handler *usersHandler) CreateUser(ctx *gin.Context) {
 	ctx.BindJSON(&userEntity) // load user value
 	user, err := handler.srv.CreateUser(userEntity)
 
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
-
-	handler.manager.CreatedSuccessfully(ctx, user)
+	handler.manager.Response(ctx, err, user, ctx.Request.Method)
 }
 
 func (handler *usersHandler) UpdateUser(ctx *gin.Context) {
-	userId, err := strconv.Atoi(ctx.Param("id"))
-	// if err != nil {
-	// 	handler.manager.BadRequest(ctx)
-	// }
-
+	userId, _ := strconv.Atoi(ctx.Param("id"))
 	var userEntity entities.User
 	ctx.BindJSON(&userEntity) // load user value
 	user, err := handler.srv.UpdateUser(userId, userEntity)
 
-	if err != nil {
-		fmt.Print(err)
-		handler.manager.BadRequest(ctx)
-	} else {
-		handler.manager.Success(ctx, user)
-	}
+	handler.manager.Response(ctx, err, user, ctx.Request.Method)
 }
 
 func (handler *usersHandler) DeleteUser(ctx *gin.Context) {
-	userId, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
+	userId, _ := strconv.Atoi(ctx.Param("id"))
+	err := handler.srv.DeleteUser(userId)
+	handler.manager.Response(ctx, err, nil, ctx.Request.Method)
+}
 
-	err = handler.srv.DeleteUser(userId)
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
+func (handler *usersHandler) ValidateUserPassword(ctx *gin.Context) {
+	userId, _ := strconv.Atoi(ctx.Param("id"))
+	var userValidation entities.UserValidation
+	ctx.BindJSON(&userValidation)
 
-	handler.manager.Success(ctx, nil)
+	userEntity, err := handler.srv.GetUser(userId)
+
+	if err != nil {
+		handler.manager.Response(ctx, err, userEntity, ctx.Request.Method)
+	} else {
+		isValid, _ := handler.srv.ValidatePasswordUser(userEntity, userValidation.Password)
+		handler.manager.Response(ctx, nil, gin.H{"validation": isValid}, ctx.Request.Method)
+	}
 }

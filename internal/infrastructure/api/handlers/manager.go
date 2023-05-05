@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,30 +13,29 @@ import (
 type Manager struct {
 }
 
-func (manager *Manager) MakeGetResponse(ctx *gin.Context, err error, object any) {
+func (manager *Manager) Response(ctx *gin.Context, err error, object any, method string) {
 	if err == nil {
-		ctx.JSON(http.StatusOK, object)
+		manager.ResponseSuccess(ctx, object, method)
 	} else if errors.Is(err, gorm.ErrRecordNotFound) {
-		ctx.JSON(http.StatusNotFound, gin.H{"message": "Record not found"})
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Record not found"})
 	} else if errors.Is(err, strconv.ErrSyntax) {
-		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 	} else {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Internal error"})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Internal error"})
 	}
-}
-
-func (manager *Manager) BadRequest(ctx *gin.Context) {
-	// ctx.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
 	return
 }
 
-func (manager *Manager) CreatedSuccessfully(ctx *gin.Context, object any) {
-	ctx.AbortWithStatusJSON(http.StatusCreated, object)
-	return
-}
-
-func (manager *Manager) Success(ctx *gin.Context, object any) {
-	ctx.AbortWithStatusJSON(http.StatusOK, object)
-	return
+func (manager *Manager) ResponseSuccess(ctx *gin.Context, object any, method string) {
+	switch method {
+	case "POST":
+		ctx.AbortWithStatusJSON(http.StatusCreated, object)
+		break
+	case "PUT":
+	case "DELETE":
+	case "GET":
+		fmt.Println(object)
+		ctx.AbortWithStatusJSON(http.StatusOK, object)
+		break
+	}
 }

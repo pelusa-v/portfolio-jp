@@ -37,5 +37,5 @@ func (srv *usersService) CreateUser(user entities.User) (entities.User, error) {
 }
 
 func (srv *usersService) ValidatePasswordUser(user entities.User, psw string) (bool, error) {
-	return false, nil // TODO implement this function
+	return user.VerifyPassword(psw)
 }

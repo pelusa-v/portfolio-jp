@@ -16,4 +16,5 @@ func RegisterUsersRouter(router *gin.Engine) {
 	router.POST("api/users/add/", usersHandlers.CreateUser)
 	router.PUT("api/users/update/:id", usersHandlers.UpdateUser)
 	router.DELETE("api/users/delete/:id", usersHandlers.DeleteUser)
+	router.POST("api/users/validate/:id", usersHandlers.ValidateUserPassword)
 }

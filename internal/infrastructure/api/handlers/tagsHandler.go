@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,41 +25,21 @@ func (handler *tagsHandler) CreateTag(ctx *gin.Context) {
 	ctx.BindJSON(&tagEntity) // load user value
 	tag, err := handler.srv.CreateTag(tagEntity)
 
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
-
-	handler.manager.CreatedSuccessfully(ctx, tag)
+	handler.manager.Response(ctx, err, tag, ctx.Request.Method)
 }
 
 func (handler *tagsHandler) UpdateTag(ctx *gin.Context) {
-	tagId, err := strconv.Atoi(ctx.Param("id"))
-	// if err != nil {
-	// 	handler.manager.BadRequest(ctx)
-	// }
-
+	tagId, _ := strconv.Atoi(ctx.Param("id"))
 	var tagEntity entities.Tag
 	ctx.BindJSON(&tagEntity) // load user value
 	tag, err := handler.srv.UpdateTag(tagId, tagEntity)
 
-	if err != nil {
-		fmt.Print(err)
-		handler.manager.BadRequest(ctx)
-	} else {
-		handler.manager.Success(ctx, tag)
-	}
+	handler.manager.Response(ctx, err, tag, ctx.Request.Method)
 }
 
 func (handler *tagsHandler) DeleteTag(ctx *gin.Context) {
-	tagId, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
+	tagId, _ := strconv.Atoi(ctx.Param("id"))
+	err := handler.srv.DeleteTag(tagId)
 
-	err = handler.srv.DeleteTag(tagId)
-	if err != nil {
-		handler.manager.BadRequest(ctx)
-	}
-
-	handler.manager.Success(ctx, nil)
+	handler.manager.Response(ctx, err, nil, ctx.Request.Method)
 }

@@ -22,7 +22,7 @@ func (userModel *User) MapEntityToModel(userEntity *entities.User) *User {
 	userModel.Email = userEntity.Email
 	userModel.Name = userEntity.Name
 	userModel.LastName = userEntity.LastName
-	userModel.Password = userEntity.Password
+	userModel.Password, _ = userEntity.HashPassword()
 	userModel.CreatedAt = userEntity.CreatedAt
 	userModel.UpdatedAt = userEntity.UpdatedAt
 	return userModel
