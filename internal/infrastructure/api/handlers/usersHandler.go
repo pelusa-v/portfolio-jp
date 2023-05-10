@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pelusa-v/portfolio-jp/internal/domain/entities"
+	"github.com/pelusa-v/portfolio-jp/internal/app/requests"
 	"github.com/pelusa-v/portfolio-jp/internal/domain/services"
 )
 
@@ -32,17 +32,19 @@ func (handler *usersHandler) ListUsers(ctx *gin.Context) {
 }
 
 func (handler *usersHandler) CreateUser(ctx *gin.Context) {
-	var userEntity entities.User
-	ctx.BindJSON(&userEntity) // load user value
+	var userRequest requests.UserRequest
+	ctx.BindJSON(&userRequest) // load user value
+	userEntity := userRequest.MapToEntity()
 	user, err := handler.srv.CreateUser(userEntity)
 
 	handler.manager.Response(ctx, err, user, ctx.Request.Method)
 }
 
 func (handler *usersHandler) UpdateUser(ctx *gin.Context) {
+	var userRequest requests.UserRequest
 	userId, _ := strconv.Atoi(ctx.Param("id"))
-	var userEntity entities.User
-	ctx.BindJSON(&userEntity) // load user value
+	ctx.BindJSON(&userRequest) // load user value
+	userEntity := userRequest.MapToEntity()
 	user, err := handler.srv.UpdateUser(userId, userEntity)
 
 	handler.manager.Response(ctx, err, user, ctx.Request.Method)
@@ -56,15 +58,15 @@ func (handler *usersHandler) DeleteUser(ctx *gin.Context) {
 
 func (handler *usersHandler) ValidateUserPassword(ctx *gin.Context) {
 	userId, _ := strconv.Atoi(ctx.Param("id"))
-	var userValidation entities.UserValidation
-	ctx.BindJSON(&userValidation)
+	var userValidationRequest requests.UserValidationRequest
+	ctx.BindJSON(&userValidationRequest)
 
 	userEntity, err := handler.srv.GetUser(userId)
 
 	if err != nil {
 		handler.manager.Response(ctx, err, userEntity, ctx.Request.Method)
 	} else {
-		isValid, _ := handler.srv.ValidatePasswordUser(userEntity, userValidation.Password)
+		isValid, _ := handler.srv.ValidatePasswordUser(userEntity, userValidationRequest.Password)
 		handler.manager.Response(ctx, nil, gin.H{"validation": isValid}, ctx.Request.Method)
 	}
 }
