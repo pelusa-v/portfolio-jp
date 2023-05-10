@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pelusa-v/portfolio-jp/internal/domain/entities"
+	"github.com/pelusa-v/portfolio-jp/internal/app/requests"
 	"github.com/pelusa-v/portfolio-jp/internal/domain/services"
 )
 
@@ -21,8 +21,9 @@ func NewTagsHandler(service services.TagsServicePort) *tagsHandler {
 }
 
 func (handler *tagsHandler) CreateTag(ctx *gin.Context) {
-	var tagEntity entities.Tag
-	ctx.BindJSON(&tagEntity) // load user value
+	var tagRequest requests.TagRequest
+	ctx.BindJSON(&tagRequest) // load user value
+	tagEntity := tagRequest.MapToEntity()
 	tag, err := handler.srv.CreateTag(tagEntity)
 
 	handler.manager.Response(ctx, err, tag, ctx.Request.Method)
@@ -30,8 +31,9 @@ func (handler *tagsHandler) CreateTag(ctx *gin.Context) {
 
 func (handler *tagsHandler) UpdateTag(ctx *gin.Context) {
 	tagId, _ := strconv.Atoi(ctx.Param("id"))
-	var tagEntity entities.Tag
-	ctx.BindJSON(&tagEntity) // load user value
+	var tagRequest requests.TagRequest
+	ctx.BindJSON(&tagRequest) // load user value
+	tagEntity := tagRequest.MapToEntity()
 	tag, err := handler.srv.UpdateTag(tagId, tagEntity)
 
 	handler.manager.Response(ctx, err, tag, ctx.Request.Method)

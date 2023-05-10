@@ -12,14 +12,6 @@ type Project struct {
 	// References  []Reference `json:"URL"`
 }
 
-type CreateProjectRequest struct {
-	Name        string `json:"name"`
-	Summary     string `json:"summary"`
-	Description string `json:"description"`
-	ImageURL    string `json:"image_url"`
-	Tags        []uint `json:"tag_ds"`
-}
-
 func (project *Project) MapModelToEntity() *entities.Project {
 	tagsEntities := TagList(project.Tags)
 	return &entities.Project{
