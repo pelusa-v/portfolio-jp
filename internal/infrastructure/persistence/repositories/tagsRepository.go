@@ -51,6 +51,8 @@ func (repo *tagsRepository) Create(tag entities.Tag) (entities.Tag, error) {
 	return tagToCreate.MapModelToEntity(), err
 }
 
-func (erpo *tagsRepository) GetTagsById(ids []uint) ([]entities.Tag, error) {
-	return nil, nil
+func (repo *tagsRepository) GetTagsById(ids []uint) ([]entities.Tag, error) {
+	var tags []entities.Tag
+	err := repo.db.Find(&tags, ids).Error
+	return tags, err
 }

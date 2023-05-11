@@ -26,8 +26,8 @@ func (handler *projectsHandler) CreateProject(ctx *gin.Context) {
 	var projectRequest requests.CreateProjectRequest
 	ctx.BindJSON(&projectRequest) // load project value
 
-	tagsEntites, err1 := handler.tagsSrv.GetTagsById(projectRequest.Tags)
-	if err1 != nil {
+	tagsEntites, errTags := handler.tagsSrv.GetTagsById(projectRequest.Tags)
+	if errTags != nil {
 		ctx.AbortWithStatus(404)
 	}
 
