@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pelusa-v/portfolio-jp/internal/app/requests"
 	"github.com/pelusa-v/portfolio-jp/internal/domain/entities"
@@ -26,16 +28,24 @@ func (handler *projectsHandler) CreateProject(ctx *gin.Context) {
 	var projectRequest requests.CreateProjectRequest
 	ctx.BindJSON(&projectRequest) // load project value
 
-	tagsEntites, errTags := handler.tagsSrv.GetTagsById(projectRequest.Tags)
-	if errTags != nil {
-		ctx.AbortWithStatus(404)
+	var tagsEntities []entities.Tag
+	var errTags error
+
+	if projectRequest.Tags != nil {
+		fmt.Println("Before run GetTagsById")
+		tagsEntities, errTags = handler.tagsSrv.GetTagsById(projectRequest.Tags)
+		if errTags != nil {
+			ctx.AbortWithStatus(404)
+		}
+	} else {
+		tagsEntities = []entities.Tag{}
 	}
 
 	projectEntity.Name = projectRequest.Name
 	projectEntity.Summary = projectRequest.Summary
 	projectEntity.Description = projectRequest.Description
 	projectEntity.ImageURL = projectRequest.ImageURL
-	projectEntity.Tags = tagsEntites
+	projectEntity.Tags = tagsEntities
 
 	project, err := handler.projectsSrv.CreateProject(projectEntity)
 

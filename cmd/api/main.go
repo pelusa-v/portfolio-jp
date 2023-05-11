@@ -9,5 +9,6 @@ func main() {
 	engine := gin.Default()
 	api.RegisterUsersRouter(engine)
 	api.RegisterTagsRouter(engine)
+	api.RegisterProjectsRouter(engine)
 	engine.Run(":8000")
 }

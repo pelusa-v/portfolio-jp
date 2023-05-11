@@ -5,5 +5,5 @@ type CreateProjectRequest struct {
 	Summary     string `json:"summary"`
 	Description string `json:"description"`
 	ImageURL    string `json:"image_url"`
-	Tags        []uint `json:"tag_ds"`
+	Tags        []uint `json:"tag_ids"`
 }

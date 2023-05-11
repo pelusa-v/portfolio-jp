@@ -18,8 +18,13 @@ func NewProjectsRepository() *projectsRepository {
 	}
 }
 
-func (repo *projectsRepository) Update(id int, project entities.Project) (entities.Project, error)
-func (repo *projectsRepository) Delete(id int) error
+func (repo *projectsRepository) Update(id int, project entities.Project) (entities.Project, error) {
+	return entities.Project{}, nil
+}
+
+func (repo *projectsRepository) Delete(id int) error {
+	return nil
+}
 
 func (repo *projectsRepository) Create(project entities.Project) (entities.Project, error) {
 	var projectToCreate models.Project
@@ -27,5 +32,10 @@ func (repo *projectsRepository) Create(project entities.Project) (entities.Proje
 	return projectToCreate.MapModelToEntity(), err
 }
 
-func (repo *projectsRepository) Get(id int) (entities.Project, error)
-func (repo *projectsRepository) List() ([]entities.Project, error)
+func (repo *projectsRepository) Get(id int) (entities.Project, error) {
+	return entities.Project{}, nil
+}
+
+func (repo *projectsRepository) List() ([]entities.Project, error) {
+	return []entities.Project{}, nil
+}

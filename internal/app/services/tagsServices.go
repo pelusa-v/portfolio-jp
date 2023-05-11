@@ -29,5 +29,5 @@ func (srv *tagsService) CreateTag(tag entities.Tag) (entities.Tag, error) {
 }
 
 func (srv *tagsService) GetTagsById(ids []uint) ([]entities.Tag, error) {
-	return srv.GetTagsById(ids)
+	return srv.repo.GetTagsById(ids)
 }

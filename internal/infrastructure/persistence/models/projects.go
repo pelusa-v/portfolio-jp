@@ -24,7 +24,7 @@ func (project *Project) MapModelToEntity() entities.Project {
 	}
 }
 
-func (proj *Project) MapEntityToModel(project *entities.Project) Project {
+func (proj *Project) MapEntityToModel(project *entities.Project) *Project {
 	var tags []Tag
 
 	for _, tagEntity := range project.Tags {
@@ -33,9 +33,10 @@ func (proj *Project) MapEntityToModel(project *entities.Project) Project {
 	}
 
 	proj.ID = project.ID
+	proj.Summary = project.Summary
 	proj.Name = project.Name
 	proj.Description = project.Description
 	proj.ImageURL = project.ImageURL
 	proj.Tags = tags
-	return *proj
+	return proj
 }

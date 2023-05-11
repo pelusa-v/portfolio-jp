@@ -24,6 +24,7 @@ func GetMysqlDB() (*gorm.DB, error) {
 func MigrateMysqlDB(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&models.User{},
+		&models.Project{},
 		&models.Tag{},
 		// &metricsmodels.Card{},
 		// &userentities.User{},
