@@ -50,3 +50,7 @@ func (repo *tagsRepository) Create(tag entities.Tag) (entities.Tag, error) {
 	fmt.Print(err)
 	return tagToCreate.MapModelToEntity(), err
 }
+
+func (erpo *tagsRepository) GetTagsById(ids []uint) ([]entities.Tag, error) {
+	return nil, nil
+}

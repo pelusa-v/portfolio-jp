@@ -22,7 +22,7 @@ func NewTagsHandler(service services.TagsServicePort) *tagsHandler {
 
 func (handler *tagsHandler) CreateTag(ctx *gin.Context) {
 	var tagRequest requests.TagRequest
-	ctx.BindJSON(&tagRequest) // load user value
+	ctx.BindJSON(&tagRequest) // load tag value
 	tagEntity := tagRequest.MapToEntity()
 	tag, err := handler.srv.CreateTag(tagEntity)
 
@@ -32,7 +32,7 @@ func (handler *tagsHandler) CreateTag(ctx *gin.Context) {
 func (handler *tagsHandler) UpdateTag(ctx *gin.Context) {
 	tagId, _ := strconv.Atoi(ctx.Param("id"))
 	var tagRequest requests.TagRequest
-	ctx.BindJSON(&tagRequest) // load user value
+	ctx.BindJSON(&tagRequest) // load tag value
 	tagEntity := tagRequest.MapToEntity()
 	tag, err := handler.srv.UpdateTag(tagId, tagEntity)
 

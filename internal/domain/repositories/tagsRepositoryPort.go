@@ -7,4 +7,5 @@ type TagsRepositoryPort interface {
 	Update(id int, tag entities.Tag) (entities.Tag, error)
 	Delete(id int) error
 	Create(tag entities.Tag) (entities.Tag, error)
+	GetTagsById(ids []uint) ([]entities.Tag, error)
 }
