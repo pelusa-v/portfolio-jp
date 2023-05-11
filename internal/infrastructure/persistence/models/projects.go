@@ -12,9 +12,9 @@ type Project struct {
 	// References  []Reference `json:"URL"`
 }
 
-func (project *Project) MapModelToEntity() *entities.Project {
+func (project *Project) MapModelToEntity() entities.Project {
 	tagsEntities := TagList(project.Tags)
-	return &entities.Project{
+	return entities.Project{
 		ID:          project.ID,
 		Name:        project.Name,
 		Summary:     project.Summary,
@@ -22,4 +22,20 @@ func (project *Project) MapModelToEntity() *entities.Project {
 		ImageURL:    project.ImageURL,
 		Tags:        tagsEntities.MapModelToEntity(),
 	}
+}
+
+func (proj *Project) MapEntityToModel(project *entities.Project) Project {
+	var tags []Tag
+
+	for _, tagEntity := range project.Tags {
+		var tagModel Tag
+		tags = append(tags, *tagModel.MapEntityToModel(&tagEntity))
+	}
+
+	proj.ID = project.ID
+	proj.Name = project.Name
+	proj.Description = project.Description
+	proj.ImageURL = project.ImageURL
+	proj.Tags = tags
+	return *proj
 }

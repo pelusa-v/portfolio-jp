@@ -52,7 +52,7 @@ func (repo *tagsRepository) Create(tag entities.Tag) (entities.Tag, error) {
 }
 
 func (repo *tagsRepository) GetTagsById(ids []uint) ([]entities.Tag, error) {
-	var tags []entities.Tag
+	var tags models.TagList
 	err := repo.db.Find(&tags, ids).Error
-	return tags, err
+	return tags.MapModelToEntity(), err
 }

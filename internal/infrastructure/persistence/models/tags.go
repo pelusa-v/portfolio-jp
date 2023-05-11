@@ -33,3 +33,14 @@ func (tagList *TagList) MapModelToEntity() []entities.Tag {
 
 	return tagsEntities
 }
+
+// func (tagList *TagList) MapEntityToModel(tags *[]entities.Tag) []Tag {
+// 	for _, tagEntity := range *tags {
+// 		tagList = append(tagList, tagEntity.)
+// 	}
+
+// 	t.ID = tag.ID
+// 	t.Name = tag.Name
+// 	t.Description = tag.Description
+// 	return []Tag(*tagList)
+// }
